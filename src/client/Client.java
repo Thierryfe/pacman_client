@@ -1,5 +1,15 @@
 package client;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.ObjectInputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+
 import Model.Maze;
 import commands.Commands_receiver;
 import commands.Commands_sender;
@@ -12,22 +22,38 @@ public class Client {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {
-			ClientSocket c= new ClientSocket(6000,"localhost");
+			ClientSocket c = new ClientSocket(6000,"localhost");
 			
-			Commands_sender commands= new Commands_sender(c);
+			Scanner clavier = new Scanner(System.in);
 			
+			DataInputStream in = new DataInputStream(c.getEntree());
+			DataOutputStream out = new DataOutputStream(c.getSortie());
 			
+			System.out.println(in.readUTF());
+			out.writeUTF(clavier.nextLine());
 			
-			ViewGame vg= null;
+			System.out.println(in.readUTF());
+			out.writeUTF(clavier.nextLine());
+			
+			Boolean connectionOk = in.readBoolean();
+			
+			if(connectionOk) {
+				Commands_sender commands= new Commands_sender(c);
+				
+				ViewGame vg= null;
 
-			Thread t= new Thread(new Commands_receiver(c,vg));
+				Thread t= new Thread(new Commands_receiver(c,vg));
 
-			t.start();
+				t.start();
 
-			ViewCommand v= new ViewCommand(commands);
-			
-			//
-			v.showWindow();
+				ViewCommand v= new ViewCommand(commands);
+				
+				//
+				v.showWindow();
+			}else {
+				System.out.println("Login ou mdp incorrecte");
+			}
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
