@@ -36,6 +36,7 @@ public class Client {
 			out.writeUTF(clavier.nextLine());
 			
 			Boolean connectionOk = in.readBoolean();
+			System.out.println(connectionOk);
 			
 			if(connectionOk) {
 				Commands_sender commands= new Commands_sender(c);
