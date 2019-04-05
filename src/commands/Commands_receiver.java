@@ -1,8 +1,12 @@
 package commands;
 
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+
+import com.google.gson.Gson;
 
 import Model.Maze;
 import client.ClientSocket;
@@ -28,28 +32,29 @@ public class Commands_receiver implements Runnable{
 			
 			try {
 				
-				ObjectInputStream ois = new ObjectInputStream(cs.getEntree());
+				DataInputStream in = new DataInputStream(this.cs.getEntree());
+				
+				/*ObjectInputStream ois = new ObjectInputStream(cs.getEntree());*/
 				
 				System.out.println("Waiting...");
 				
-				Maze newMaze = (Maze)ois.readObject();
+				String s = in.readUTF();
+				Gson gson = new Gson();
+				Maze m = gson.fromJson(s , Maze.class);
+				/*Maze newMaze = (Maze)ois.readObject();*/
 				
 				if( vg != null)
-					vg.update(newMaze);
+					vg.update(m);
 				else {
 					KeyCommand_sender key= new KeyCommand_sender(cs);
-					vg= new ViewGame(newMaze, key);
+					vg= new ViewGame(m, key);
 					vg.showWindow();
 				}
 				
-				System.out.println("Sérializable maze récupéré. modifications : "+newMaze.getGhosts_start().size());
+				System.out.println("Sï¿½rializable maze rï¿½cupï¿½rï¿½. modifications : "+m.getGhosts_start().size());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				break;
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				System.out.println("La donnée envoyée par le serveur n'est pas une classe serializable.");
 				break;
 			}
 		}
