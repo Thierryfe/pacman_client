@@ -34,14 +34,11 @@ public class Commands_receiver implements Runnable{
 				
 				DataInputStream in = new DataInputStream(this.cs.getEntree());
 				
-				/*ObjectInputStream ois = new ObjectInputStream(cs.getEntree());*/
-				
 				System.out.println("Waiting...");
 				
 				String s = in.readUTF();
 				Gson gson = new Gson();
 				Maze m = gson.fromJson(s , Maze.class);
-				/*Maze newMaze = (Maze)ois.readObject();*/
 				
 				if( vg != null)
 					vg.update(m);
@@ -51,7 +48,7 @@ public class Commands_receiver implements Runnable{
 					vg.showWindow();
 				}
 				
-				System.out.println("S�rializable maze r�cup�r�. modifications : "+m.getGhosts_start().size());
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

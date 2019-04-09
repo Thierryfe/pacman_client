@@ -4,12 +4,12 @@ import client.*;
 public class Commands_sender implements InterfaceControler {
 
 	private ClientSocket cs;
-	private boolean isInited;
+	static public boolean isInited;
 	private String filename;
 	public Commands_sender(ClientSocket cs) {
 		super();
 		this.cs = cs;
-		this.isInited=false;
+		Commands_sender.isInited=false;
 	}
 
 	@Override

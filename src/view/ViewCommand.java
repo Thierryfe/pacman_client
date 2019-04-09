@@ -98,6 +98,8 @@ public class ViewCommand {
 
 		frame.add(panel);
 		frame.add(panelBelow);
+		restart.setEnabled(false);
+		sliderLaps.setEnabled(false);
 
 		/*
 		 * Listener
@@ -174,9 +176,11 @@ public class ViewCommand {
 						controler.setMap(fileChooser.getSelectedFile().getName());
 						//change map locally and remotely 
 						controler.restart();
+						restart.setEnabled(true);
 						getStart().setEnabled(true);
 						getStep().setEnabled(true);
 						getPause().setEnabled(false);
+						sliderLaps.setEnabled(true);
 						
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block

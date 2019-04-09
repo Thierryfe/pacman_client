@@ -1,4 +1,5 @@
 package client;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -16,8 +17,10 @@ public class ClientSocket {
 		super();
 		try {
 			socket = new Socket(address, port);
-
-		} 	catch (SocketException e) {
+		
+		} 	catch (ConnectException e) {
+			System.out.println("Erreur de connexion au serveur.");
+		}	catch (SocketException e) {
 			e.printStackTrace();
 		} 	catch(UnknownHostException e) {
 			e.printStackTrace();
